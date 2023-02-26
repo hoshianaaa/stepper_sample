@@ -7,73 +7,54 @@ EN-  5
 DIR-  6
 PUL-  7
 */
+/*
 int EN = 5;
 int DIR = 6;
 int PUL = 7;
+*/
 
-boolean  dir = true;
+
+int step_pin = 7;
+int dir_pin = 6;
+int relay_pin = 5;
 
 void setup()
 {
-  pinMode(EN,OUTPUT);
-  pinMode(DIR,OUTPUT);
-  pinMode(PUL,OUTPUT);
-}
-void clockwiseRotation(unsigned char rotationspeed)  //
-{
-    digitalWrite(DIR,LOW);
-    digitalWrite(EN,HIGH);  
-    digitalWrite(PUL,LOW);
-    delay(rotationspeed);
-    digitalWrite(PUL,HIGH);
-    delay(rotationspeed);
+  pinMode(step_pin, OUTPUT);
+  pinMode(dir_pin, OUTPUT);
+  pinMode(relay_pin, OUTPUT);
+  digitalWrite(dir_pin, HIGH);
+  digitalWrite(relay_pin, LOW);
+
+  Serial.begin( 9600 );
 }
 
-void negativeRotation(unsigned char rotationspeed)
-{
-    digitalWrite(DIR,HIGH);
-    digitalWrite(EN,HIGH);
-    digitalWrite(PUL,LOW);
-    delay(rotationspeed);
-    digitalWrite(PUL,HIGH);
-    delay(rotationspeed);
-}
 
-/*
-Multiple_Of_45_Degrees:Stepper motor rotation multiples of 45 degrees;
-Speed:Adjust the speed of stepper motor 
-*/
-void stepByStepClockwiseRotation(unsigned int Multiple_Of_45_Degrees,unsigned int Speed)   //+45.
-{
-  unsigned int n=0;
-  for(n = 0;n < 50 * Multiple_Of_45_Degrees;n++)
-  {
-    clockwiseRotation(Speed); //The Speed value, the greater the stepper motor rotate Speed is slow
+void spinMotor(int direction, int num){
+  digitalWrite(relay_pin, HIGH);
+  if(direction == 0){
+    digitalWrite(dir_pin, LOW);
+  }else{
+    digitalWrite(dir_pin, HIGH);
   }
-  dir = true;
+
+  for(int i=0;i<num;i++)
+  {
+    digitalWrite(step_pin, HIGH);
+    delayMicroseconds(100);
+    digitalWrite(step_pin, LOW);
+    delayMicroseconds(100);
+  }
+ // digitalWrite(relay_pin, );
 }
 
-void stepByStepNegativeRotation(unsigned int Multiple_Of_45_Degrees,unsigned int Speed)   //-45.
-{
-  unsigned int n=0;
-  for(n = 0;n < 50 * Multiple_Of_45_Degrees ;n++)
-  {
-    negativeRotation(Speed);
-  }
-  dir = false;
-}
 void loop()
 {
-    //clockwiseRotation();  
-    if(dir)
-    {
-    delay(5000);
-    stepByStepNegativeRotation(35,5);
-    delay(1000);
-    }
-    else
-   {
-    stepByStepClockwiseRotation(35,5) ;
-    delay(1000);
-    }
+  spinMotor(0,200*32);
+  delay(3000);
+
+  spinMotor(1,200*32);
+  delay(3000);
+
 }
+
