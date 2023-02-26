@@ -24,14 +24,13 @@ void setup()
   pinMode(dir_pin, OUTPUT);
   pinMode(relay_pin, OUTPUT);
   digitalWrite(dir_pin, HIGH);
-  digitalWrite(relay_pin, LOW);
+  digitalWrite(relay_pin, HIGH);
 
   Serial.begin( 9600 );
 }
 
 
 void spinMotor(int direction, int num){
-  digitalWrite(relay_pin, HIGH);
   if(direction == 0){
     digitalWrite(dir_pin, LOW);
   }else{
@@ -40,20 +39,19 @@ void spinMotor(int direction, int num){
 
   for(int i=0;i<num;i++)
   {
-    digitalWrite(step_pin, HIGH);
-    delayMicroseconds(100);
     digitalWrite(step_pin, LOW);
-    delayMicroseconds(100);
+    delayMicroseconds(2000);
+    digitalWrite(step_pin, HIGH);
+    delayMicroseconds(2000);
   }
- // digitalWrite(relay_pin, );
 }
 
 void loop()
 {
-  spinMotor(0,200*32);
+  spinMotor(0,200);
   delay(3000);
 
-  spinMotor(1,200*32);
+  spinMotor(1,200);
   delay(3000);
 
 }
