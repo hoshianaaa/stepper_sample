@@ -26,7 +26,7 @@ void setup()
   digitalWrite(dir_pin, HIGH);
   digitalWrite(relay_pin, HIGH);
 
-  Serial.begin( 9600 );
+  //Serial.begin( 9600 );
 }
 
 
@@ -40,19 +40,38 @@ void spinMotor(int direction, int num){
   for(int i=0;i<num;i++)
   {
     digitalWrite(step_pin, LOW);
-    delayMicroseconds(2000);
+    delayMicroseconds(1000);
     digitalWrite(step_pin, HIGH);
-    delayMicroseconds(2000);
+    delayMicroseconds(1000);
   }
 }
 
+int deg2step(double deg)
+{
+  return int(200.0/360.0*deg);
+}
+
+double step2deg(int step)
+{
+  return 360.0/200.0*step;
+}
+
+double now_count=0;
+double now_deg=0;
+double d_deg=90;
+
 void loop()
 {
-  spinMotor(0,200);
-  delay(3000);
 
-  spinMotor(1,200);
-  delay(3000);
+  now_deg += d_deg;
+  int d_count = deg2step(now_deg - step2deg(now_count));
+  now_count += d_count;
+
+  spinMotor(0,d_count);
+  delay(500);
+
+//  spinMotor(1,200);
+//  delay(3000);
 
 }
 
