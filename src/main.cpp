@@ -1,6 +1,33 @@
 #include <Arduino.h>
 
 /*
+
+ピンリスト
+
+0 TX
+1 RX
+2
+3 pwm
+4 
+5 pwm
+6 pwm
+7
+8
+9 pwm
+10 pwm
+11 pwm
+12
+13
+14 A0
+15 A1
+16 A2
+17 A3
+18 A4
+19 A5
+
+*/
+
+/*
 TB6600 module connected with the ARDUINO:
 EN +, DIR + : PUL + (total Yang connection mode)
 EN-  5
