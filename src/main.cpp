@@ -48,6 +48,7 @@ int relay_pin = 5;
 
 int command_pin = 8;
 int return_pin = 3;
+int led_pin = 13;
 
 void setup()
 {
@@ -59,6 +60,7 @@ void setup()
 
   pinMode(command_pin, INPUT_PULLUP);
   pinMode(return_pin, OUTPUT);
+  pinMode(led_pin, OUTPUT);
 
   Serial.begin( 9600 );
 }
@@ -106,6 +108,7 @@ void loop()
   if ((last_command != command) && (command == 0))
   {
     digitalWrite(return_pin, 0);
+    digitalWrite(led_pin, 0);
     now_deg += d_deg;
     d_count = deg2step(now_deg - step2deg(now_count));
     now_count += d_count;
@@ -114,6 +117,7 @@ void loop()
 
     delay(10);
     digitalWrite(return_pin, 1);
+    digitalWrite(led_pin, 1);
   }
   last_command = command;
 
