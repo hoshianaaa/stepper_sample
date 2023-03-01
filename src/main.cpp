@@ -46,7 +46,7 @@ int step_pin = 7;
 int dir_pin = 6;
 int relay_pin = 5;
 
-int command_pin = 2;
+int command_pin = 8;
 int return_pin = 3;
 
 void setup()
