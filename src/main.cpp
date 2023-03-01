@@ -57,7 +57,10 @@ void setup()
   digitalWrite(dir_pin, HIGH);
   digitalWrite(relay_pin, HIGH);
 
-  //Serial.begin( 9600 );
+  pinMode(command_pin, INPUT_PULLUP);
+  pinMode(return_pin, OUTPUT);
+
+  Serial.begin( 9600 );
 }
 
 
@@ -94,10 +97,13 @@ double d_deg=90;
 
 int last_command = 0;
 
+int command = 0;
+
 void loop()
 {
   command = digitalRead(command_pin);
-  if ((last_command != command) && (command == 1))
+  Serial.println(command);
+  if ((last_command != command) && (command == 0))
   {
     digitalWrite(return_pin, 0);
     now_deg += d_deg;
