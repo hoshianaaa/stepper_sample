@@ -27,6 +27,7 @@
 
 */
 
+
 /*
 TB6600 module connected with the ARDUINO:
 EN +, DIR + : PUL + (total Yang connection mode)
@@ -44,6 +45,9 @@ int PUL = 7;
 int step_pin = 7;
 int dir_pin = 6;
 int relay_pin = 5;
+
+int command_pin = 2;
+int return_pin = 3;
 
 void setup()
 {
@@ -84,18 +88,28 @@ double step2deg(int step)
 }
 
 double now_count=0;
+int d_count = 0;
 double now_deg=0;
 double d_deg=90;
 
+int last_command = 0;
+
 void loop()
 {
+  command = digitalRead(command_pin);
+  if ((last_command != command) && (command == 1))
+  {
+    digitalWrite(return_pin, 0);
+    now_deg += d_deg;
+    d_count = deg2step(now_deg - step2deg(now_count));
+    now_count += d_count;
 
-  now_deg += d_deg;
-  int d_count = deg2step(now_deg - step2deg(now_count));
-  now_count += d_count;
+    spinMotor(0,d_count);
 
-  spinMotor(0,d_count);
-  delay(500);
+    delay(10);
+    digitalWrite(return_pin, 1);
+  }
+  last_command = command;
 
 //  spinMotor(1,200);
 //  delay(3000);
